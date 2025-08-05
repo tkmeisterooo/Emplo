@@ -1,0 +1,9 @@
+Zakładając, że parametry metody z zadania 3 pobieramy bezpośrednio z bazy danych. Czy
+znasz jakieś sposoby na optymalizację liczby zapytań SQL w tego typu przypadkach? Wymień
+i opisz krótko każdy z nich.
+
+1. Korzystając z EF Core możemy stworzyć metodę która pobierze od razu Employee wraz z relacjami, korzystając z metody Include(). Tutaj co prawda nie zawsze otrzymujemy jedno query, natomiast pobieramy wtedy dane tylko takie które są w relacji z konkretnym pracownikiem.
+Dodatkowo możemy wykorzystać metodę .AsNoTracking() w przypadku gdy dane zamierzamy tylko odczytać i nie wykonujemy żadnych modyfikacji pobranych encji, takie query jest szybsze ponieważ EF Core nie śledzi wtedy zmian na pobranej encji.
+
+
+2. Dla danych statycznych lub takich które mają małe prawdopodobieństwo zmian możemy skorzystać z Cache (np. Memory Cache), co pozwoli zredukować liczbę zapytań do bazy. Warto zaznaczyć że należy wtedy wprowadzić odpowiednią metodykę odświeżania danych lub weryfikacji czy nasze dane napewno są aktualne.
